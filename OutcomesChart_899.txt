@@ -1,0 +1,101 @@
+Created At: 2026-06-05T19:17:26Z
+Completed At: 2026-06-05T19:17:26Z
+File Path: `file:///c:/Users/kanan/Desktop/OncoPilot/frontend/components/view1/OutcomesChart.tsx`
+Total Lines: 242
+Total Bytes: 9792
+Showing lines 1 to 242
+The following code has been modified to include a line number before every line, in the format: <line_number>: <original_line>. Please note that any changes targeting the original code should remove the line number, colon, and leading space.
+1: "use client";
+2: 
+3: import React, { useState } from "react";
+4: 
+5: const REGIMENS = [
+6:   {
+7:     name: "Osimertinib Monotherapy",
+8:     short: "Osimertinib",
+9:     cr: 12, pr: 68, sd: 15, pd: 5,
+10:     medianOS: 38.6,
+11:     medianPFS: 18.9,
+12:     highlight: true,
+13:   },
+14:   {
+15:     name: "Osimertinib + Pemetrexed/Carboplatin",
+16:     short: "Osimertinib + Chemo",
+17:     cr: 18, pr: 71, sd: 8, pd: 3,
+18:     medianOS: 34.1,
+19:     medianPFS: 20.2,
+20:     highlight: false,
+21:   },
+22:   {
+23:     name: "Standard Platinum Doublet Chemo",
+24:     short: "Platinum Doublet",
+25:     cr: 5, pr: 39, sd: 36, pd: 20,
+26:     medianOS: 20.4,
+27:     medianPFS: 8.5,
+28:     highlight: false,
+29:   },
+30: ];
+31: 
+32: const SEGMENT_COLORS = {
+33:   cr:  { color: "#059669", label: "Complete Response (CR)" },
+34:   pr:  { color: "#3b82f6", label: "Partial Response (PR)" },
+35:   sd:  { color: "#f59e0b", label: "Stable Disease (SD)" },
+36:   pd:  { color: "#ef4444", label: "Progressive Disease (PD)" },
+37: };
+38: 
+39: export default function OutcomesChart() {
+40:   const [hovered, setHovered] = useState<{ regIdx: number; seg: string } | null>(null);
+41:   const [activeRegimen, setActiveRegimen] = useState<number>(0);
+42: 
+43:   return (
+44:     <div
+45:       style={{
+46:         background: "#fff",
+47:         border: "1px solid #e2e8f0",
+48:         borderRadius: 12,
+49:         overflow: "hidden",
+50:         boxShadow: "0 2px 12px rgba(0,0,0,0.06)",
+51:       }}
+52:     >
+53:       {/* Header */}
+54:       <div
+55:         style={{
+56:        
+<truncated 7347 bytes>
+00 : 600, color: isSelected ? "#059669" : "#475569" }}>
+208:                     {isSelected && <span style={{ marginRight: 4 }}>▶</span>}
+209:                     {reg.short}
+210:                   </span>
+211:                   <span style={{
+212:                     fontWeight: 800, fontSize: 11, fontFamily: "monospace",
+213:                     color: orr >= 75 ? "#059669" : orr >= 50 ? "#2563eb" : "#ef4444"
+214:                   }}>
+215:                     ORR {orr}%
+216:                   </span>
+217:                 </div>
+218:                 <div style={{ height: 8, borderRadius: 999, background: "#f1f5f9", overflow: "hidden", display: "flex" }}>
+219:                   <div style={{ width: `${reg.cr}%`, height: "100%", background: "#059669", transition: "width 0.3s" }} />
+220:                   <div style={{ width: `${reg.pr}%`, height: "100%", background: "#3b82f6", transition: "width 0.3s" }} />
+221:                   <div style={{ width: `${reg.sd}%`, height: "100%", background: "#f59e0b", transition: "width 0.3s" }} />
+222:                   <div style={{ width: `${reg.pd}%`, height: "100%", background: "#ef4444", transition: "width 0.3s" }} />
+223:                 </div>
+224:               </div>
+225:             );
+226:           })}
+227:         </div>
+228: 
+229:         {/* Legend */}
+230:         <div style={{ display: "flex", flexWrap: "wrap", gap: "8px 16px", marginTop: 14, paddingTop: 12, borderTop: "1px solid #f1f5f9" }}>
+231:           {Object.entries(SEGMENT_COLORS).map(([key, { color, label }]) => (
+232:             <span key={key} style={{ display: "flex", alignItems: "center", gap: 5, fontSize: 10, fontWeight: 600, color: "#64748b" }}>
+233:               <span style={{ width: 10, height: 10, borderRadius: 2, background: color, display: "inline-block" }} />
+234:               {label}
+235:             </span>
+236:           ))}
+237:         </div>
+238:       </div>
+239:     </div>
+240:   );
+241: }
+242: 
+The above content shows the entire, complete file contents of the requested file.

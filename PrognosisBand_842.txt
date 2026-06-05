@@ -1,0 +1,70 @@
+Created At: 2026-06-05T19:06:25Z
+Completed At: 2026-06-05T19:06:26Z
+File Path: `file:///c:/Users/kanan/Desktop/OncoPilot/frontend/components/view1/PrognosisBand.tsx`
+Total Lines: 63
+Total Bytes: 3517
+Showing lines 1 to 63
+The following code has been modified to include a line number before every line, in the format: <line_number>: <original_line>. Please note that any changes targeting the original code should remove the line number, colon, and leading space.
+1: import React from "react";
+2: import { PrognosisStats } from "../../lib/types";
+3: 
+4: interface PrognosisBandProps {
+5:   stats: PrognosisStats;
+6: }
+7: 
+8: export default function PrognosisBand({ stats }: PrognosisBandProps) {
+9:   return (
+10:     <div className="rounded-lg shadow-sm card-accent-blue" style={{ background: 'var(--surface)', border: '1px solid var(--border)' }}>
+11:       {/* Header */}
+12:       <div className="flex items-center justify-between px-4 py-3 border-b" style={{ borderColor: 'var(--border)' }}>
+13:         <h3 className="text-xs font-bold uppercase tracking-wider flex items-center gap-2" style={{ color: 'var(--navy)' }}>
+14:           <span className="w-1.5 h-3.5 rounded-sm" style={{ background: 'var(--navy-light)' }}></span>
+15:           Prognosis & Outcomes Cohort
+16:         </h3>
+17:         <span className="text-[10px] font-mono font-bold px-2 py-0.5 rounded border" style={{ background: 'var(--background)', color: 'var(--text-muted)', borderColor: 'var(--border-subtle)' }}>
+18:           N = {stats.cohort_count} cases
+19:         </span>
+20:       </div>
+21: 
+22:       <div className="p-4 space-y-4">
+23:         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+24:           {/* Overall Survival */}
+25:           <div className="p-3.5 rounded-md shadow-3xs" style={{ background: '#f0f5fa', border: '1px solid var(--border-subtle)', borderLeft: '3.5px solid var(--navy-light)' }}>
+26:             <div className="text-[10px] font-bold uppercase tracking-wider" style={{ color: 'var(--navy-light)' }}>
+27:               M
+<truncated 211 bytes>
+e="text-xs font-normal font-sans" style={{ color: 'var(--text-muted)' }}>months</span>
+31:             </div>
+32:             <div className="text-[10px] font-bold mt-2 inline-flex items-center px-2 py-0.5 rounded border" style={{ background: 'white', color: 'var(--navy-light)', borderColor: '#cbd5e1' }}>
+33:               Range: {stats.os_range[0]} – {stats.os_range[1]} mos
+34:             </div>
+35:           </div>
+36: 
+37:           {/* Progression Free Survival */}
+38:           {stats.median_pfs_months && (
+39:             <div className="p-3.5 rounded-md shadow-3xs" style={{ background: '#f0faf5', border: '1px solid var(--clinical-green-border)', borderLeft: '3.5px solid var(--clinical-green)' }}>
+40:               <div className="text-[10px] font-bold uppercase tracking-wider" style={{ color: 'var(--clinical-green)' }}>
+41:                 Median Progression-Free (PFS)
+42:               </div>
+43:               <div className="text-2xl font-bold mt-1.5 font-mono" style={{ color: 'var(--navy)' }}>
+44:                 {stats.median_pfs_months} <span className="text-xs font-normal font-sans" style={{ color: 'var(--text-muted)' }}>months</span>
+45:               </div>
+46:               {stats.pfs_range && (
+47:                 <div className="text-[10px] font-bold mt-2 inline-flex items-center px-2 py-0.5 rounded border" style={{ background: 'white', color: 'var(--clinical-green)', borderColor: 'var(--clinical-green-border)' }}>
+48:                   Range: {stats.pfs_range[0]} – {stats.pfs_range[1]} mos
+49:                 </div>
+50:               )}
+51:             </div>
+52:           )}
+53:         </div>
+54: 
+55:         {/* Disclaimer */}
+56:         <p className="text-[11px] leading-relaxed p-3 rounded-md italic" style={{ background: '#f8fafc', color: 'var(--text-muted)', border: '1px solid var(--border-subtle)' }}>
+57:           {stats.disclaimer}
+58:         </p>
+59:       </div>
+60:     </div>
+61:   );
+62: }
+63: 
+The above content shows the entire, complete file contents of the requested file.

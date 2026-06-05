@@ -1,0 +1,66 @@
+Created At: 2026-06-05T18:16:07Z
+Completed At: 2026-06-05T18:16:07Z
+File Path: `file:///c:/Users/kanan/Desktop/OncoPilot/frontend/components/view1/PrognosisBand.tsx`
+Total Lines: 58
+Total Bytes: 2487
+Showing lines 1 to 58
+The following code has been modified to include a line number before every line, in the format: <line_number>: <original_line>. Please note that any changes targeting the original code should remove the line number, colon, and leading space.
+1: import React from "react";
+2: import { PrognosisStats } from "../../lib/types";
+3: 
+4: interface PrognosisBandProps {
+5:   stats: PrognosisStats;
+6: }
+7: 
+8: export default function PrognosisBand({ stats }: PrognosisBandProps) {
+9:   return (
+10:     <div className="bg-slate-950/40 border border-slate-800/80 rounded-xl p-4 shadow-lg space-y-3.5">
+11:       <div className="flex items-center justify-between pb-2 border-b border-slate-800/60">
+12:         <h3 className="text-xs font-bold uppercase tracking-wider text-slate-400 font-mono">
+13:           Prognosis & Outcomes
+14:         </h3>
+15:         <span className="text-[9px] bg-slate-900 border border-slate-800 text-slate-400 px-2 py-0.5 rounded font-mono font-semibold">
+16:           N = {stats.cohort_count} cases
+17:         </span>
+18:       </div>
+19: 
+20:       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+21:         {/* Overall Survival */}
+22:         <div className="bg-slate-900/30 border border-slate-800/50 rounded-lg p-3">
+23:           <div className="text-[9px] text-slate-500 font-bold uppercase tracking-wider font-mono">
+24:             Median Overall Survival (OS)
+25:           </div>
+26:           <div className="text-xl font-bold text-slate-100 mt-1 font-mono">
+27:             {stats.median_os_months} <span className="text-xs font-normal text-slate-400 font-sans">months</span>
+28:           </div>
+29:           <div className="text-[10px] text-indigo-400 mt-1 font-mono font-semibold">
+30:             Range: {stats.os_range[0]} – {stats.os_range[1]} mos
+31:           </div>
+32:         </div>
+33: 
+34:         {/* Progression Free Survival */}
+35:         {stats.median_pfs_months && (
+36:           <div className="bg-slate-900/30 border border-slate-800/50 rounded-lg p-3">
+37:             <div className="text-[9px] text-slate-500 font-bold uppercase tracking-wider font-mono">
+38:               Median Progression-Free (PFS)
+39:             </div>
+40:             <div className="text-xl font-bold text-slate-100 mt-1 font-mono">
+41:               {stats.median_pfs_months} <span className="text-xs font-normal text-slate-400 font-sans">months</span>
+42:             </div>
+43:             {stats.pfs_range && (
+44:               <div className="text-[10px] text-indigo-400 mt-1 font-mono font-semibold">
+45:                 Range: {stats.pfs_range[0]} – {stats.pfs_range[1]} mos
+46:               </div>
+47:             )}
+48:           </div>
+49:         )}
+50:       </div>
+51: 
+52:       <p className="text-[10px] text-slate-500 bg-slate-900/20 p-2.5 rounded border border-slate-800/40 leading-relaxed italic">
+53:         {stats.disclaimer}
+54:       </p>
+55:     </div>
+56:   );
+57: }
+58: 
+The above content shows the entire, complete file contents of the requested file.
