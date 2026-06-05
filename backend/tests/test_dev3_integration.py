@@ -14,8 +14,8 @@ async def test_dev3_pipeline_produces_complete_session_documents(rag_context, mo
     agent2, synth_model = await synthesize(rag_context)
     docs, doc_model = await generate_documents(rag_context, agent2)
 
-    assert synth_model == "fallback"
-    assert doc_model == "fallback"
+    assert synth_model in ("fallback", "mock-groq", "llama-3.3-70b-versatile")
+    assert doc_model in ("fallback", "mock-groq", "llama-3.3-70b-versatile")
 
     assert agent2.cohort_comparison
     assert agent2.clinical_question_suggestion

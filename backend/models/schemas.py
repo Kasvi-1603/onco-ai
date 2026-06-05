@@ -1,14 +1,28 @@
-"""Shared API schemas — must mirror frontend/lib/types.ts."""
+"""Shared API schemas — aligned with frontend-implementation.md."""
 
 from __future__ import annotations
 
 from datetime import datetime
 from typing import Any, Literal
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, computed_field
 
-SessionStatus = Literal["pending", "reviewed", "shared"]
+SessionStatus = Literal["uploaded", "processing", "pending", "reviewed", "shared", "failed", "ready"]
+PipelineStatusValue = Literal["uploaded", "processing", "ready", "failed"]
 MatchColor = Literal["green", "amber", "red"]
+SupportedLang = Literal["en", "hi", "ta", "kn"]
+ExtractionConfidence = Literal["high", "medium", "low"]
+
+PIPELINE_STEPS = [
+    "ocr",
+    "extract",
+    "similarity",
+    "trial_match",
+    "knowledge_retrieve",
+    "agent2",
+    "documents",
+    "ready",
+]
 
 
 class PathologyProfile(BaseModel):
@@ -17,7 +31,9 @@ class PathologyProfile(BaseModel):
     grade: str | None = None
     mitotic_index: float | None = None
     surgical_margin: str | None = None
+    margins: str | None = None
     tumor_size_mm: float | None = None
+    size_mm: float | None = None
     lvi: bool | None = None
     pni: bool | None = None
 
@@ -32,12 +48,14 @@ class GenomicProfile(BaseModel):
     keap1: str | None = None
     tmb: float | None = None
     pd_l1_percent: float | None = None
+    pd_l1: float | None = None
     cnv: str | None = None
     assay: str | None = None
 
 
 class ImagingProfile(BaseModel):
     tumor_lobe: str | None = None
+    lobe: str | None = None
     n_stage: str | None = None
     m_stage: str | None = None
     pleural_invasion: bool | None = None
@@ -61,7 +79,7 @@ class ClinicalProfile(BaseModel):
     tnm: str | None = None
     prior_therapies: list[str] = Field(default_factory=list)
     comorbidities: list[str] = Field(default_factory=list)
-    labs: ClinicalLabs | None = None
+    labs: ClinicalLabs | dict[str, Any] | None = None
     weight_kg: float | None = None
     allergies: list[str] = Field(default_factory=list)
 
@@ -73,14 +91,15 @@ class PatientProfile(BaseModel):
     clinical: ClinicalProfile = Field(default_factory=ClinicalProfile)
     missing_fields: list[str] = Field(default_factory=list)
     source_snippets: dict[str, str] = Field(default_factory=dict)
+    extraction_confidence: ExtractionConfidence = "high"
 
 
 class ParamScore(BaseModel):
     param: str
     score: float
     color: MatchColor
-    patient_value: str | None = None
-    cohort_value: str | None = None
+    patient_value: str | float | None = None
+    cohort_value: str | float | None = None
 
 
 class SimilarCohort(BaseModel):
@@ -101,13 +120,22 @@ class SimilarCohort(BaseModel):
 class TrialMatch(BaseModel):
     nct_id: str
     title: str
+    trial_title: str | None = None
     phase: str | None = None
     status: str | None = None
     eligibility: Literal["eligible_for_review", "conflicts", "excluded"] = "eligible_for_review"
     matched_on: list[str] = Field(default_factory=list)
     conflicts: list[str] = Field(default_factory=list)
     inclusion_summary: str | None = None
+    raw_eligibility: str | None = None
     intervention: str | None = None
+    match_score: float | None = None
+
+    def model_post_init(self, __context: Any) -> None:
+        if not self.trial_title:
+            object.__setattr__(self, "trial_title", self.title)
+        if not self.raw_eligibility:
+            object.__setattr__(self, "raw_eligibility", self.inclusion_summary or "")
 
 
 class KnowledgeSnippet(BaseModel):
@@ -119,17 +147,32 @@ class KnowledgeSnippet(BaseModel):
 
 class RiskFlag(BaseModel):
     code: str
-    severity: Literal["info", "warning", "critical"] = "warning"
     message: str
+    severity: Literal["info", "warning", "critical", "high", "medium", "low"] = "warning"
+
+    @computed_field  # type: ignore[prop-decorator]
+    @property
+    def flag_type(self) -> str:
+        return self.code
+
+    @computed_field  # type: ignore[prop-decorator]
+    @property
+    def description(self) -> str:
+        return self.message
 
 
 class PrognosisStats(BaseModel):
     cohort_count: int
     median_os_months: float | None = None
-    os_range: tuple[float, float] | None = None
+    os_range: tuple[float, float] | list[float] | None = None
     median_pfs_months: float | None = None
-    pfs_range: tuple[float, float] | None = None
+    pfs_range: tuple[float, float] | list[float] | None = None
     summary: str = ""
+    disclaimer: str = "Uncertain individual estimate — discuss with your care team."
+
+    def model_post_init(self, __context: Any) -> None:
+        if self.summary and not self.disclaimer.startswith("Uncertain"):
+            object.__setattr__(self, "disclaimer", self.summary)
 
 
 class TrialJustification(BaseModel):
@@ -149,6 +192,10 @@ class SessionDocuments(BaseModel):
     treatment_plan: str = ""
     mdt_brief: str = ""
     trial_report: str = ""
+    referral_letter: str = ""
+    toxicity_check: str = ""
+    prognosis: str = ""
+    patient_summary_clinical: str = ""
 
 
 class SessionPayload(BaseModel):
@@ -158,6 +205,7 @@ class SessionPayload(BaseModel):
     similar_cohorts: list[SimilarCohort] = Field(default_factory=list)
     trial_matches: list[TrialMatch] = Field(default_factory=list)
     knowledge_snippets: list[KnowledgeSnippet] = Field(default_factory=list)
+    knowledge_snippet_ids: list[str] = Field(default_factory=list)
     risk_flags: list[RiskFlag] = Field(default_factory=list)
     prognosis_stats: PrognosisStats | None = None
     agent2_insights: Agent2Output | None = None
@@ -166,6 +214,14 @@ class SessionPayload(BaseModel):
     approved_at: datetime | None = None
     approved_documents: SessionDocuments | None = None
     draft_label: str = "DRAFT — for oncologist review"
+
+    def model_post_init(self, __context: Any) -> None:
+        if not self.knowledge_snippet_ids and self.knowledge_snippets:
+            object.__setattr__(
+                self,
+                "knowledge_snippet_ids",
+                [k.snippet_id for k in self.knowledge_snippets],
+            )
 
 
 class RAGContext(BaseModel):
@@ -184,21 +240,82 @@ class AuditEntry(BaseModel):
     model: str | None = None
     input_hash: str | None = None
     retrieved_ids: list[str] = Field(default_factory=list)
-    timestamp: datetime
+    timestamp: datetime | str
     details: dict[str, Any] | None = None
+
+
+class AuditResponse(BaseModel):
+    session_id: str
+    entries: list[AuditEntry]
 
 
 class UploadResponse(BaseModel):
     session_id: str
-    raw_text: str | None = None
+    status: Literal["uploaded"] = "uploaded"
+    file_count: int = 0
+    ocr_preview: str | None = None
     demo: bool = False
+    raw_text: str | None = None
+    case_id: str | None = None
+    case_label: str | None = None
+
+
+class CaseSummary(BaseModel):
+    case_id: str
+    label: str
+    description: str | None = None
+    target_cohort: str | None = None
+
+
+class PipelineStatus(BaseModel):
+    session_id: str
+    status: PipelineStatusValue
+    current_step: str
+    steps_completed: list[str] = Field(default_factory=list)
+    steps_total: int = len(PIPELINE_STEPS)
+    error: str | None = None
+
+
+class DocumentsPatchRequest(BaseModel):
+    documents: SessionDocuments
+
+
+class ApproveRequest(BaseModel):
+    approved_documents: SessionDocuments | None = None
+    approver_note: str | None = None
 
 
 class ApproveResponse(BaseModel):
-    status: SessionStatus
-    approved_documents: SessionDocuments
+    session_id: str
+    status: Literal["shared"] = "shared"
     approved_at: datetime
+    patient_portal_url: str
+    approved_documents: SessionDocuments | None = None
+
+
+class PatientLocalizedSections(BaseModel):
+    what_we_found: str
+    what_this_means: str
+    side_effects: str
+    trials: str | None = None
+    questions_for_doctor: list[str] = Field(default_factory=list)
+
+
+class PatientLocalizedView(BaseModel):
+    session_id: str
+    lang: SupportedLang
+    status: Literal["shared"] = "shared"
+    headline: str
+    sections: PatientLocalizedSections
+    footer_disclaimer: str
+
+
+class PatientNotSharedError(BaseModel):
+    error: Literal["not_shared"] = "not_shared"
+    message: str = "Your doctor is reviewing your results"
+    status: SessionStatus = "pending"
 
 
 class HealthResponse(BaseModel):
     status: str = "ok"
+    demo_patient: bool = False

@@ -1,4 +1,6 @@
 {
+  "case_id": "egfr-exon19",
+  "label": "Case 1: TCGA-LUAD EGFR Exon 19 (SYN-001 ~94% match)",
   "demo_session_id": "demo-patient-001",
   "description": "Simulated upload crafted to match SYN-001 at ~87% weighted similarity. Use with DEMO_PATIENT=true or as OCR input for Agent 1 testing.",
   "target_cohort_match": "SYN-001",

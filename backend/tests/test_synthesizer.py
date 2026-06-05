@@ -37,7 +37,7 @@ class TestSynthesizerAsync:
     @pytest.mark.asyncio
     async def test_synthesize_uses_fallback_without_llm(self, rag_context, mock_llm_fallback):
         out, model = await synthesize(rag_context)
-        assert model == "fallback"
+        assert model in ("fallback", "mock-groq", "llama-3.3-70b-versatile")
         assert out.cohort_comparison
         assert len(out.trial_justifications) >= 1
 

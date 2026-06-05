@@ -116,8 +116,9 @@ def minimal_rag_context() -> RAGContext:
 
 
 @pytest.fixture
-def mock_llm_fallback():
+def mock_llm_fallback(monkeypatch):
     """Force LLM layer to use template fallbacks (no Groq/Ollama needed)."""
+    monkeypatch.setattr("config.settings.groq_api_key", "")
     with patch("services.llm.complete", new_callable=AsyncMock, return_value=("", "fallback")):
         yield
 

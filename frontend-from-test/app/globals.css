@@ -1,0 +1,111 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+@import "tailwindcss";
+
+:root {
+  --background: #f8f9fb;
+  --foreground: #0f1623;
+  --surface: #ffffff;
+  --surface-raised: #ffffff;
+  --border: #e2e6ed;
+  --border-subtle: #edf0f4;
+  --navy: #0f2d56;
+  --navy-mid: #1a4480;
+  --navy-light: #2563a8;
+  --navy-muted: #e8eef7;
+  --clinical-green: #0d7b4f;
+  --clinical-green-bg: #f0faf5;
+  --clinical-green-border: #b3e6cf;
+  --clinical-amber: #92400e;
+  --clinical-amber-bg: #fffbeb;
+  --clinical-amber-border: #fde68a;
+  --clinical-red: #991b1b;
+  --clinical-red-bg: #fef2f2;
+  --clinical-red-border: #fecaca;
+  --text-primary: #0f1623;
+  --text-secondary: #374151;
+  --text-muted: #6b7280;
+  --text-subtle: #9ca3af;
+  --shadow-sm: 0 1px 2px 0 rgba(15, 23, 42, 0.05);
+  --shadow: 0 1px 3px 0 rgba(15, 23, 42, 0.08), 0 1px 2px -1px rgba(15, 23, 42, 0.06);
+  --shadow-md: 0 4px 6px -1px rgba(15, 23, 42, 0.07), 0 2px 4px -2px rgba(15, 23, 42, 0.05);
+  --shadow-lg: 0 10px 15px -3px rgba(15, 23, 42, 0.07), 0 4px 6px -4px rgba(15, 23, 42, 0.04);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  background: var(--background);
+  color: var(--text-primary);
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 5px; height: 5px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: #d1d5db; border-radius: 10px; }
+::-webkit-scrollbar-thumb:hover { background: #9ca3af; }
+
+/* Scan animation for anatomical scanner */
+@keyframes scan {
+  0% { top: -10%; }
+  100% { top: 110%; }
+}
+.animate-scan {
+  animation: scan 4s linear infinite;
+}
+
+@keyframes lung-pulse {
+  0%, 15%, 45%, 100% { fill: #1a4480; filter: drop-shadow(0 0 0px transparent); }
+  25%, 35% { fill: #2563a8; filter: drop-shadow(0 0 6px rgba(37, 99, 168, 0.5)); }
+}
+
+@keyframes div-lung-pulse {
+  0%, 15%, 45%, 100% { opacity: 0; }
+  25%, 35% { opacity: 0.6; }
+}
+
+.animate-lung-pulse .lung {
+  animation: lung-pulse 4s linear infinite;
+}
+
+/* Subtle fade-in for tab transitions */
+@keyframes fadeSlideIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.animate-in {
+  animation: fadeSlideIn 0.2s ease-out forwards;
+}
+
+/* Table row hover */
+.clinical-table tbody tr:hover {
+  background: #f8f9fb;
+}
+
+/* Premium Card Accent Borders */
+.card-accent-blue {
+  border-top: 3px solid var(--navy-light) !important;
+}
+
+.card-accent-indigo {
+  border-top: 3px solid #6366f1 !important;
+}
+
+.card-accent-green {
+  border-top: 3px solid var(--clinical-green) !important;
+}
+
+.card-accent-amber {
+  border-top: 3px solid var(--clinical-amber) !important;
+}
+
+.card-accent-navy {
+  border-top: 3px solid var(--navy) !important;
+}
+
