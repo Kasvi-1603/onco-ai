@@ -1,0 +1,37 @@
+[
+    {
+      "nct_id": "NCT04267848",
+      "title": "Osimertinib vs Gefitinib/Erlotinib in EGFR-mutated NSCLC (FLAURA)",
+      "phase": "Phase 3",
+      "biomarker_tags": ["EGFR", "Exon19", "L858R"],
+      "eligibility_text": "Inclusion: EGFR exon 19 del or L858R, stage IIIB/IV NSCLC, no prior EGFR TKI. Exclusion: prior systemic treatment, eGFR < 30."
+    },
+    {
+      "nct_id": "NCT03949608",
+      "title": "Amivantamab in EGFR Exon 20 Insertion NSCLC (PAPILLON)",
+      "phase": "Phase 3",
+      "biomarker_tags": ["EGFR", "Exon20"],
+      "eligibility_text": "Inclusion: EGFR exon 20 insertion, stage IV, no prior chemotherapy. Exclusion: prior EGFR TKI, active CNS metastases."
+    },
+    {
+      "nct_id": "NCT03778229",
+      "title": "Sotorasib in KRAS G12C NSCLC (CodeBreaK 200)",
+      "phase": "Phase 3",
+      "biomarker_tags": ["KRAS", "G12C"],
+      "eligibility_text": "Inclusion: KRAS G12C, previously treated NSCLC. Exclusion: active interstitial lung disease."
+    },
+    {
+      "nct_id": "NCT04042819",
+      "title": "Selpercatinib in RET Fusion NSCLC (LIBRETTO-431)",
+      "phase": "Phase 3",
+      "biomarker_tags": ["RET"],
+      "eligibility_text": "Inclusion: RET fusion-positive, stage IV NSCLC, treatment naive. Exclusion: prior RET inhibitor."
+    },
+    {
+      "nct_id": "NCT02299635",
+      "title": "Alectinib vs Crizotinib in ALK-positive NSCLC (ALEX)",
+      "phase": "Phase 3",
+      "biomarker_tags": ["ALK"],
+      "eligibility_text": "Inclusion: ALK-positive (IHC or FISH), stage IIIB/IV. Exclusion: prior ALK inhibitor, untreated CNS metastases."
+    }
+  ]

@@ -1,0 +1,50 @@
+[
+    {
+      "snippet_id": "NCCN-NSCLC-EGFR-001",
+      "content": "For EGFR exon 19 deletion or exon 21 L858R mutations, osimertinib (Category 1) is the preferred first-line therapy for metastatic NSCLC. Dose: 80mg orally once daily.",
+      "tags": ["EGFR", "Exon19", "L858R", "osimertinib", "first-line"],
+      "source": "NCCN Guidelines NSCLC v2.2024"
+    },
+    {
+      "snippet_id": "FDA-OSIMERTINIB-001",
+      "content": "Osimertinib is indicated for first-line treatment of adult patients with metastatic NSCLC whose tumors have EGFR exon 19 deletions or exon 21 L858R mutations. Recommended dose: 80mg orally once daily.",
+      "tags": ["EGFR", "osimertinib", "FDA", "dosing"],
+      "source": "FDA Tagrisso Prescribing Information 2023"
+    },
+    {
+      "snippet_id": "NCCN-NSCLC-ALK-001",
+      "content": "Alectinib (Category 1) is the preferred first-line agent for ALK-positive metastatic NSCLC. Dose: 600mg orally twice daily with food.",
+      "tags": ["ALK", "alectinib", "first-line"],
+      "source": "NCCN Guidelines NSCLC v2.2024"
+    },
+    {
+      "snippet_id": "NCCN-NSCLC-KRAS-001",
+      "content": "Sotorasib or adagrasib are recommended for patients with KRAS G12C-mutated NSCLC who have received prior platinum-based chemotherapy.",
+      "tags": ["KRAS", "G12C", "sotorasib", "adagrasib", "second-line"],
+      "source": "NCCN Guidelines NSCLC v2.2024"
+    },
+    {
+      "snippet_id": "NCCN-NSCLC-PDL1-001",
+      "content": "Pembrolizumab monotherapy is recommended for treatment-naive metastatic NSCLC with PD-L1 TPS >= 50% and no actionable driver mutations.",
+      "tags": ["PDL1", "pembrolizumab", "immunotherapy", "first-line"],
+      "source": "NCCN Guidelines NSCLC v2.2024"
+    },
+    {
+      "snippet_id": "FDA-ALECTINIB-001",
+      "content": "Alectinib is indicated for ALK-positive metastatic NSCLC. Grade 3-4 adverse reactions include myalgia, elevated CPK, and bradycardia. Dose reduction to 450mg BID for Grade 3 toxicity.",
+      "tags": ["ALK", "alectinib", "toxicity", "FDA"],
+      "source": "FDA Alecensa Prescribing Information 2023"
+    },
+    {
+      "snippet_id": "NCCN-NSCLC-RET-001",
+      "content": "Selpercatinib is the preferred agent for RET fusion-positive metastatic NSCLC. Dose: 160mg orally twice daily.",
+      "tags": ["RET", "selpercatinib", "first-line"],
+      "source": "NCCN Guidelines NSCLC v2.2024"
+    },
+    {
+      "snippet_id": "NCCN-NSCLC-MET-001",
+      "content": "Tepotinib or capmatinib are recommended for MET exon 14 skipping mutations in metastatic NSCLC.",
+      "tags": ["MET", "tepotinib", "capmatinib", "first-line"],
+      "source": "NCCN Guidelines NSCLC v2.2024"
+    }
+  ]
