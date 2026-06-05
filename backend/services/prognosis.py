@@ -1,41 +1,48 @@
-"""Prognosis stats from top-k similar cohorts — Python only."""
-
-from __future__ import annotations
-
 import statistics
+from typing import List
+from backend.models.schemas import CohortScore, PrognosisStats
 
-from models.schemas import PrognosisStats, SimilarCohort
+def calculate_prognosis_stats(top_cohorts: List[CohortScore]) -> PrognosisStats:
+    """
+    Calculates deterministic prognosis statistics (median OS/PFS) based on top matching cohorts.
+    Assumes top_cohorts is already sorted by similarity score.
+    """
+    if not top_cohorts:
+        return PrognosisStats(cohort_size=0)
+        
+    os_values = []
+    pfs_values = []
+    
+    # We take up to the top 8 cohorts for statistics
+    subset = top_cohorts[:8]
+    
+    for cohort in subset:
+        data = cohort.cohort_data
+        os = data.get("outcome_os_months")
+        pfs = data.get("outcome_pfs_months")
+        
+        if os is not None:
+            try:
+                os_values.append(float(os))
+            except ValueError:
+                pass
+                
+        if pfs is not None:
+            try:
+                pfs_values.append(float(pfs))
+            except ValueError:
+                pass
 
-
-def compute_prognosis(cohorts: list[SimilarCohort], top_k: int = 8) -> PrognosisStats:
-    top = cohorts[:top_k]
-    if not top:
-        return PrognosisStats(cohort_count=0, summary="Insufficient similar cases for prognosis estimate.")
-
-    os_vals = [c.outcome_os_months for c in top if c.outcome_os_months is not None]
-    pfs_vals = [c.outcome_pfs_months for c in top if c.outcome_pfs_months is not None]
-
-    median_os = statistics.median(os_vals) if os_vals else None
-    median_pfs = statistics.median(pfs_vals) if pfs_vals else None
-    os_range = (min(os_vals), max(os_vals)) if os_vals else None
-    pfs_range = (min(pfs_vals), max(pfs_vals)) if pfs_vals else None
-
-    summary_parts = []
-    if median_os is not None and os_range:
-        summary_parts.append(
-            f"Median OS {median_os:.1f} mo (range {os_range[0]:.0f}–{os_range[1]:.0f}) "
-            f"in {len(os_vals)} similar institutional cases"
-        )
-    if median_pfs is not None and pfs_range:
-        summary_parts.append(
-            f"Median PFS {median_pfs:.1f} mo (range {pfs_range[0]:.0f}–{pfs_range[1]:.0f})"
-        )
+    median_os = statistics.median(os_values) if os_values else None
+    median_pfs = statistics.median(pfs_values) if pfs_values else None
+    
+    range_os = [min(os_values), max(os_values)] if os_values else None
+    range_pfs = [min(pfs_values), max(pfs_values)] if pfs_values else None
 
     return PrognosisStats(
-        cohort_count=len(top),
-        median_os_months=round(median_os, 1) if median_os else None,
-        os_range=os_range,
-        median_pfs_months=round(median_pfs, 1) if median_pfs else None,
-        pfs_range=pfs_range,
-        summary=". ".join(summary_parts) + ". Uncertainty bands apply — not a individual prediction.",
+        median_os_months=median_os,
+        median_pfs_months=median_pfs,
+        range_os_months=range_os,
+        range_pfs_months=range_pfs,
+        cohort_size=len(subset)
     )

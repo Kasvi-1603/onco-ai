@@ -1,62 +1,49 @@
-"""Knowledge retriever — tag overlap on mock NCCN/FDA snippets."""
+from typing import List, Dict, Any
+from backend.models.schemas import PatientProfile, KnowledgeSnippet
 
-from __future__ import annotations
-
-from db.database import get_all_knowledge
-from models.schemas import KnowledgeSnippet, PatientProfile
-
-
-def _collect_tags(profile: PatientProfile) -> set[str]:
-    tags: set[str] = set()
-    g = profile.genomic
-    if g.egfr:
-        eg = g.egfr.lower()
-        tags.add("egfr")
-        if "exon 19" in eg:
-            tags.add("exon19")
-        if "l858r" in eg:
-            tags.add("l858r")
-        if "exon 20" in eg:
-            tags.add("exon20")
-    if g.kras and "g12c" in g.kras.lower():
-        tags.add("kras")
-        tags.add("g12c")
-    if g.alk and "positive" in g.alk.lower():
-        tags.add("alk")
-    if g.pd_l1_percent is not None:
-        tags.add("pd-l1")
-        if g.pd_l1_percent >= 50:
-            tags.add("pembrolizumab")
-    if profile.pathology.subtype:
-        tags.add(profile.pathology.subtype.lower())
-    tags.add("osimertinib")
-    tags.add("first-line")
-    tags.add("stageiii")
-    if profile.clinical.stage:
-        tags.add(profile.clinical.stage.lower().replace(" ", ""))
-    return tags
-
-
-def retrieve_knowledge(profile: PatientProfile, limit: int = 5) -> list[KnowledgeSnippet]:
-    patient_tags = _collect_tags(profile)
-    rows = get_all_knowledge()
-    scored: list[tuple[int, dict]] = []
-
-    for row in rows:
-        row_tags = {t.lower() for t in row.get("tags", [])}
-        overlap = len(patient_tags & row_tags)
-        if overlap > 0:
-            scored.append((overlap, row))
-
-    scored.sort(key=lambda x: x[0], reverse=True)
-    result: list[KnowledgeSnippet] = []
-    for _, row in scored[:limit]:
-        result.append(
-            KnowledgeSnippet(
-                snippet_id=row["snippet_id"],
-                source=row["source"],
-                tags=row.get("tags", []),
-                content=row["content"],
-            )
-        )
-    return result
+def retrieve_knowledge(patient: PatientProfile, knowledge_db: List[Dict[str, Any]], limit: int = 5) -> List[KnowledgeSnippet]:
+    """
+    Retrieves mock NCCN/FDA guidelines based on overlapping tags.
+    Tags are derived from positive biomarkers and candidate drugs in the patient profile.
+    """
+    # Build a set of patient tags to match against
+    patient_tags = set()
+    
+    # Positive biomarkers
+    for biomarker in patient.positive_biomarkers:
+        patient_tags.add(str(biomarker).lower())
+        
+    # Candidate drugs
+    for drug in patient.candidate_drugs:
+        patient_tags.add(str(drug).lower())
+        
+    # Also add specific genomic findings if not explicitly in positive_biomarkers
+    if patient.genomic.egfr and str(patient.genomic.egfr).lower() != "negative":
+        patient_tags.add("egfr")
+    if patient.genomic.alk and str(patient.genomic.alk).lower() != "negative":
+        patient_tags.add("alk")
+        
+    matched_snippets = []
+    
+    for entry in knowledge_db:
+        entry_tags = set([t.lower() for t in entry.get("tags", [])])
+        
+        # Check overlap
+        if patient_tags.intersection(entry_tags):
+            # Calculate match score based on number of overlapping tags
+            overlap_count = len(patient_tags.intersection(entry_tags))
+            matched_snippets.append((overlap_count, entry))
+            
+    # Sort by overlap count descending
+    matched_snippets.sort(key=lambda x: x[0], reverse=True)
+    
+    # Return top 'limit' snippets mapped to KnowledgeSnippet schema
+    results = []
+    for _, snippet_data in matched_snippets[:limit]:
+        results.append(KnowledgeSnippet(
+            snippet_id=snippet_data.get("snippet_id", "UNKNOWN"),
+            content=snippet_data.get("content", ""),
+            tags=snippet_data.get("tags", [])
+        ))
+        
+    return results
