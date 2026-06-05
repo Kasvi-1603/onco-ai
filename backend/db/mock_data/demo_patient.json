@@ -1,0 +1,70 @@
+{
+  "demo_session_id": "demo-patient-001",
+  "description": "Simulated upload crafted to match SYN-001 at ~87% weighted similarity. Use with DEMO_PATIENT=true or as OCR input for Agent 1 testing.",
+  "target_cohort_match": "SYN-001",
+  "expected_similarity_percent": 87,
+  "patient_profile": {
+    "pathology": {
+      "subtype": "LUAD",
+      "histological_type": "Adenocarcinoma",
+      "grade": "G2",
+      "mitotic_index": 11,
+      "surgical_margin": "Not applicable",
+      "tumor_size_mm": 45,
+      "lvi": true,
+      "pni": false
+    },
+    "genomic": {
+      "egfr": "Exon 19 deletion",
+      "kras": "Wild-type",
+      "alk": "Negative",
+      "ros1": "Negative",
+      "tp53": "Wild-type",
+      "stk11": "Wild-type",
+      "keap1": "Wild-type",
+      "tmb": 4.0,
+      "pd_l1_percent": 12,
+      "cnv": "None detected",
+      "assay": "FoundationOne CDx NGS"
+    },
+    "imaging": {
+      "tumor_lobe": "Right upper lobe",
+      "n_stage": "N2",
+      "m_stage": "M0",
+      "pleural_invasion": false,
+      "metastasis_sites": [],
+      "max_tumor_size_mm": 45
+    },
+    "clinical": {
+      "age": 54,
+      "sex": "F",
+      "smoking": "never",
+      "ecog": 1,
+      "stage": "IIIA",
+      "tnm": "pT2aN2M0",
+      "prior_therapies": [],
+      "comorbidities": ["Hypertension", "Mild asthma"],
+      "labs": {
+        "egfr_ml_min": 78,
+        "alt_u_l": 22,
+        "hemoglobin_g_dl": 12.4,
+        "platelets_k": 245
+      },
+      "weight_kg": 62,
+      "allergies": ["Penicillin"]
+    },
+    "missing_fields": [],
+    "source_snippets": {
+      "egfr": "Molecular pathology: EGFR exon 19 deletion (c.2235_2249del, p.E746_A750del) detected at variant allele frequency 42%.",
+      "subtype": "Diagnosis: Invasive adenocarcinoma, moderately differentiated (Grade 2), acinar predominant pattern.",
+      "stage": "Clinical stage IIIA (T2aN2M0) — bulky right paratracheal and subcarinal lymphadenopathy on PET-CT.",
+      "pd_l1_percent": "PD-L1 immunohistochemistry (22C3 pharmDx): Tumor Proportion Score 12%.",
+      "tumor_lobe": "CT chest: 4.5 cm spiculated mass in the right upper lobe (RUL), no pleural effusion.",
+      "n_stage": "FDG-avid right paratracheal (4R) and subcarinal (7) nodes, largest 1.8 cm short axis — clinical N2.",
+      "smoking": "Social history: Never smoker. No occupational asbestos exposure.",
+      "ecog": "Performance status ECOG 1 — ambulatory, restricted in strenuous activity.",
+      "comorbidities": "Past medical history: Hypertension controlled on amlodipine. Mild intermittent asthma, no daily inhaler."
+    }
+  },
+  "raw_ocr_text": "INSTITUTIONAL PATHOLOGY REPORT\nAccession: PATH-2024-88421 | Specimen: CT-guided core biopsy, right upper lobe lung mass\n\nCLINICAL HISTORY: 54-year-old female, never smoker. CT chest shows 4.5 cm RUL spiculated mass with mediastinal adenopathy. ECOG 1.\n\nDIAGNOSIS: Invasive adenocarcinoma, moderately differentiated (Grade 2), acinar predominant pattern.\nTumor size (biopsy fragment): estimated 45 mm on imaging correlation.\nLymphovascular invasion: Present.\nPerineural invasion: Not identified.\n\nIMMUNOHISTOCHEMISTRY:\nTTF-1: Positive\nNapsin A: Positive\np40: Negative\n\nMOLECULAR PATHOLOGY (FoundationOne CDx NGS):\nEGFR exon 19 deletion (c.2235_2249del, p.E746_A750del) — VAF 42%\nKRAS: No mutation detected\nALK (IHC): Negative\nROS1 (FISH): Negative\nTP53: Wild-type\nTMB: 4 Muts/Mb\nPD-L1 IHC (22C3): Tumor Proportion Score 12%\n\n---\n\nRADIOLOGY REPORT — CT CHEST WITH CONTRAST\nIndication: Staging of newly diagnosed lung malignancy.\n\nFindings:\n- 4.5 cm spiculated mass in the right upper lobe (RUL), no cavitation.\n- Enlarged right paratracheal (station 4R) lymph node, 1.8 cm short axis.\n- Enlarged subcarinal (station 7) lymph node, 1.5 cm short axis.\n- No pleural effusion. No pleural invasion.\n- No adrenal, hepatic, or osseous metastases identified.\n\nImpression: Primary lung adenocarcinoma with mediastinal nodal involvement (N2). Clinical stage IIIA (T2aN2M0).\n\n---\n\nCLINICAL NOTES — MEDICAL ONCOLOGY CONSULT\nPatient: 54F, never smoker.\nPMH: Hypertension (amlodipine 5mg daily), mild intermittent asthma.\nAllergies: Penicillin (rash).\nLabs: Creatinine 0.9 mg/dL (eGFR ~78 mL/min), ALT 22 U/L, Hgb 12.4 g/dL, Plt 245K.\nWeight: 62 kg.\n\nAssessment: Newly diagnosed stage IIIA LUAD, EGFR exon 19 deletion, PD-L1 12%. ECOG 1.\nPlan: Discuss first-line osimertinib vs chemoradiation per NCCN. Multidisciplinary tumor board referral.\nTumor board question: Candidate for definitive chemoradiation with durvalumab consolidation vs upfront osimertinib in unresectable stage III EGFR-mutated disease?\n\nDRAFT — for oncologist review only."
+}

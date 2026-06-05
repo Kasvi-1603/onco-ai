@@ -1,0 +1,133 @@
+Oncopilot — hackathon game plan
+A complete blueprint: inputs, outputs, phases, features, and tech stack
+
+Overview
+Phase 1 — similarity engine
+Phase 2 — output generator
+Inputs & outputs
+Bonus features
+Tech stack
+MVP for demo
+With the top matched cases as context, Oncopilot helps the oncologist generate all clinical outputs. These are RAG-grounded, not hallucinated.
+
+Treatment plan / chemo orders
+AI drafts a regimen citing NCCN guideline + most similar past case. Includes drug name, dose, route, schedule, cycle count, monitoring plan. Oncologist edits inline before signing.
+Tumor board (MDT) summary
+Compress a 200-page patient history into a 1-page structured brief: demographics, diagnosis timeline, current stage, molecular profile, lines of therapy, and the clinical question for the board (e.g. "Is this patient a candidate for secondary resection?").
+Patient-facing summary (plain language)
+Translates the pathology + treatment plan into compassionate, jargon-free language. Readability tuned to 8th-grade level. Replaces "poorly differentiated neoplasm with nodal involvement" with "an aggressive cancer that has reached some nearby lymph nodes".
+Peer-to-peer / referral letter
+Structured letter to the referring GP or specialist. Covers diagnosis, staging, current treatment plan, and next steps. Can be toggled between formal and brief formats.
+Clinical trial eligibility report
+Checks the patient's biomarker profile against active trials on ClinicalTrials.gov. Lists eligible trials with inclusion/exclusion criteria matched to patient's actual values. Huge value-add oncologists currently do manually.
+Toxicity & drug interaction check
+Before finalising the treatment plan, flag any contraindications based on the patient's labs, comorbidities, and other medications. Pull from FDA drug labels via RAG.
+Prognosis estimate
+Based on matched past cases' outcomes (OS, PFS), estimate a probabilistic prognosis range. E.g. "In the 8 most similar past cases, median OS was 14.2 months (range 9–22 months)." Always with uncertainty bands — never a false single number.
+
+
+The similarity engine is the backbone. It must compare the new patient against all past cases across every measurable parameter simultaneously.
+
+What parameters to compare (each scored separately)
+For each parameter, compute a similarity score (0–1). Weighted average gives the final "similarity rank".
+
+Pathology params
+Cancer subtype (e.g. Adenocarcinoma)
+Tumour grade (G1–G4)
+Mitotic index
+Surgical margin status
+Tumour size (mm)
+Genomic params
+EGFR / KRAS / ALK / ROS1
+TP53, STK11, KEAP1
+TMB (tumour mutational burden)
+PD-L1 expression %
+Copy number variations
+Imaging params
+Tumour location (lobe)
+Tumour shape/density (CT)
+Node involvement (N stage)
+Pleural invasion
+Metastasis sites
+Clinical params
+Age, sex, smoking history
+ECOG performance status
+Stage (I–IV, TNM)
+Prior treatment lines
+Co-morbidities
+Similarity algorithm (what to build)
+For text/categorical data → BioBERT embeddings + cosine similarity. For imaging → pre-trained CNN feature vectors (ResNet-50 fine-tuned on lung CT). For numerical → normalized Euclidean distance. Combine into a weighted multi-modal similarity score. Store all case vectors in FAISS for fast nearest-neighbour search. Top-5 and top-10 matches are shown with a breakdown of which parameters matched and which diverged.
+What the oncologist sees in Phase 1
+A ranked list of matched past cases. Each card shows: overall similarity %, a parameter-by-parameter match breakdown (green = match, amber = partial, red = diverges), the treatment they received, and outcome (OS, PFS, response). Clickable to drill into the full past case report. Filters by parameter type.
+With the top matched cases as context, Oncopilot helps the oncologist generate all clinical outputs. These are RAG-grounded, not hallucinated.
+
+Treatment plan / chemo orders
+AI drafts a regimen citing NCCN guideline + most similar past case. Includes drug name, dose, route, schedule, cycle count, monitoring plan. Oncologist edits inline before signing.
+Tumor board (MDT) summary
+Compress a 200-page patient history into a 1-page structured brief: demographics, diagnosis timeline, current stage, molecular profile, lines of therapy, and the clinical question for the board (e.g. "Is this patient a candidate for secondary resection?").
+Patient-facing summary (plain language)
+Translates the pathology + treatment plan into compassionate, jargon-free language. Readability tuned to 8th-grade level. Replaces "poorly differentiated neoplasm with nodal involvement" with "an aggressive cancer that has reached some nearby lymph nodes".
+Peer-to-peer / referral letter
+Structured letter to the referring GP or specialist. Covers diagnosis, staging, current treatment plan, and next steps. Can be toggled between formal and brief formats.
+Clinical trial eligibility report
+Checks the patient's biomarker profile against active trials on ClinicalTrials.gov. Lists eligible trials with inclusion/exclusion criteria matched to patient's actual values. Huge value-add oncologists currently do manually.
+Toxicity & drug interaction check
+Before finalising the treatment plan, flag any contraindications based on the patient's labs, comorbidities, and other medications. Pull from FDA drug labels via RAG.
+Prognosis estimate
+Inputs (what the oncologist reads)
+Pathology report
+Histological type
+Tumour grade
+Mitotic rate
+Surgical margins
+Lymphovascular invasion
+Perineural invasion
+Radiology report
+CT chest/abdomen/pelvis
+PET-CT (SUV values)
+MRI brain
+Tumour dimensions (mm)
+Lymph node status
+Metastasis locations
+Genomics / NGS report
+Driver mutations (EGFR etc.)
+TMB score
+MSI status
+PD-L1 CPS score
+Gene fusions (ALK, RET)
+Copy number alterations
+Lab / clinical notes
+CBC, CMP, LFTs
+ECOG performance status
+Weight, BSA
+Prior treatment history
+Allergies / comorbidities
+Patient's self-reported symptomsOutputs (what the oncologist produces)
+Treatment plan
+Drug, dose, route, schedule
+Cycle count + rest periods
+Pre-meds and supportive care
+Monitoring labs + imaging
+Dose reduction rules
+NCCN guideline citation
+Tumor board brief
+1-page structured summary
+Case timeline
+Molecular profile snapshot
+Clinical question for board
+Proposed options A/B/C
+Board decision field
+Patient summary
+Plain-language diagnosis
+What the tests showed
+Treatment plan explained
+Side effects to expect
+Next appointment info
+Questions to ask the doctor
+Clinical letters
+GP referral letter
+Specialist consult request
+Insurance prior auth letter
+Discharge summary
+Trial eligibility letter
+Second opinion summary
