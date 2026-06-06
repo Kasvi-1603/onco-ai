@@ -1,0 +1,67 @@
+{
+  "case_id": "kras-g12c",
+  "label": "Case 2: KRAS G12C LUAD (SYN-003 ~91% match)",
+  "description": "Former smoker, 68M, stage IIIA LUAD with KRAS G12C — matches SYN-003 sotorasib cohort.",
+  "target_cohort_match": "SYN-003",
+  "expected_similarity_percent": 91,
+  "patient_profile": {
+    "pathology": {
+      "subtype": "LUAD",
+      "histological_type": "Adenocarcinoma",
+      "grade": "G3",
+      "mitotic_index": 18,
+      "surgical_margin": "R1",
+      "tumor_size_mm": 55,
+      "lvi": true,
+      "pni": false
+    },
+    "genomic": {
+      "egfr": "Wild-type",
+      "kras": "G12C",
+      "alk": "Negative",
+      "ros1": "Negative",
+      "tp53": "Mutated",
+      "stk11": "Mutated",
+      "keap1": "Wild-type",
+      "tmb": 8.1,
+      "pd_l1_percent": 45,
+      "cnv": "CDKN2A loss",
+      "assay": "FoundationOne CDx NGS"
+    },
+    "imaging": {
+      "tumor_lobe": "Right lower lobe",
+      "n_stage": "N1",
+      "m_stage": "M0",
+      "pleural_invasion": true,
+      "metastasis_sites": [],
+      "max_tumor_size_mm": 55
+    },
+    "clinical": {
+      "age": 68,
+      "sex": "M",
+      "smoking": "former",
+      "ecog": 1,
+      "stage": "IIIA",
+      "tnm": "pT2bN1M0",
+      "prior_therapies": ["Carboplatin/Pemetrexed x4"],
+      "comorbidities": ["COPD", "Coronary artery disease"],
+      "labs": {
+        "egfr_ml_min": 72,
+        "alt_u_l": 38,
+        "hemoglobin_g_dl": 11.8,
+        "platelets_k": 210
+      },
+      "weight_kg": 78,
+      "allergies": []
+    },
+    "missing_fields": [],
+    "source_snippets": {
+      "kras": "MOLECULAR: KRAS G12C mutation detected (c.34G>T, p.G12C) — VAF 38%.",
+      "subtype": "DIAGNOSIS: Poorly differentiated adenocarcinoma, solid growth pattern.",
+      "stage": "Clinical stage IIIA (T2bN1M0).",
+      "pd_l1_percent": "PD-L1 IHC (22C3): Tumor Proportion Score 45%.",
+      "smoking": "Social history: Former smoker, 30 pack-years, quit 2015."
+    }
+  },
+  "raw_ocr_text": "PATHOLOGY REPORT\nAccession: PATH-2024-99201 | Specimen: CT-guided core biopsy, right lower lobe\n\nCLINICAL HISTORY: 68-year-old male, former smoker (30 pack-years, quit 2015). ECOG 1.\n\nDIAGNOSIS: Poorly differentiated adenocarcinoma, solid growth pattern.\nTumor size: 55 mm on imaging correlation.\nLymphovascular invasion: Present.\n\nMOLECULAR PATHOLOGY (FoundationOne CDx NGS):\nKRAS G12C mutation (c.34G>T, p.G12C) — VAF 38%\nEGFR: Wild-type\nALK: Negative\nROS1: Negative\nTP53: Mutated\nSTK11: Mutated\nPD-L1 IHC (22C3): Tumor Proportion Score 45%\nTMB: 8.1 Muts/Mb\n\n---\n\nRADIOLOGY REPORT — CT CHEST\nFindings: 5.5 cm mass in the right lower lobe. Station 10R node 1.4 cm — N1 disease.\nPleural invasion suspected. No distant metastases.\nImpression: Stage IIIA (T2bN1M0).\n\n---\n\nMEDICAL ONCOLOGY NOTE\n68M former smoker. Prior carboplatin/pemetrexed x4 cycles.\nAssessment: Stage IIIA LUAD, KRAS G12C, PD-L1 45%.\nPlan: Discuss sotorasib vs chemo-IO per guidelines. Tumor board referral.\n\nDRAFT — for oncologist review only."
+}
