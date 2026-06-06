@@ -27,3 +27,7 @@ oncopilot.db
 .vscode/
 .DS_Store
 Thumbs.db
+
+# Nested repo backup (local only)
+OncopilotAI/.git-oncopilot-backup/
+
